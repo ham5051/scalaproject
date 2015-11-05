@@ -1,0 +1,8 @@
+
+
+/**
+ * @author jham
+ */
+class Inventory {
+  
+}
