@@ -36,7 +36,7 @@ class Order {
         try{
           
           val OrderLine = new OrderLine
-            OrderLine.GetOrderLine(scanner.nextLine().toString());
+            OrderLine GetOrderLine(scanner nextLine() toString());
           } catch (NumberFormatException e){
             
             System.out.println("Failed to select a correct Order ID.");
