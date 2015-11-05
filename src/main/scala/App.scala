@@ -12,5 +12,7 @@ object App {
      Product.GetProducts
      val Order = new Order
      Order.GetOrders
+     val PurchaseOrder = new PurchaseOrder
+     PurchaseOrder.GetPurchaseOrders
    }
 }
