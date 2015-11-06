@@ -24,7 +24,8 @@ class Order {
 
       // creates the statement, and run the select query
       val resultSet = statement.executeQuery(sql)
-
+      
+       println("Customer Orders")
       //passing gathered column Data into variables
       while (resultSet.next()) {
         val Orderid = resultSet.getString("customerorderid")
@@ -142,7 +143,8 @@ class Order {
         Database.connection
 
       }
-
+      
+      //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Dispatched' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
@@ -159,7 +161,7 @@ class Order {
         Database.connection
 
       }
-
+      //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Confirmed' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
@@ -176,7 +178,7 @@ class Order {
         Database.connection
 
       }
-
+            //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Processing' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);

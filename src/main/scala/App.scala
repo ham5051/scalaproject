@@ -20,6 +20,7 @@ object App {
         println("#1 Products")
         println("#2 Orders")
         println("#3 Change Order Status")
+        println("#4 View Purchase Orders")
 
         val scanner = new Scanner(System.in)
         val line: String = scanner.nextLine()
@@ -33,6 +34,12 @@ object App {
           case "3" =>
             val Order = new Order
             Order ChangeOrderStatus
+          case "4" => 
+            val PurchaseOrder = new PurchaseOrder
+            PurchaseOrder GetPurchaseOrders
+          case "5" => 
+            val PurchaseOrder = new PurchaseOrder
+            PurchaseOrder ChangePurchaseOrderStatus
           case _ => println("choose valid option")
         }
       }

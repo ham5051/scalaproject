@@ -8,7 +8,7 @@ class Product {
   //method for getting a list of all products from the database
   def GetProducts {
 
-    
+    //initiates new database connection
     val Database = new Database
     
     //if no connection is initiated it will create one
