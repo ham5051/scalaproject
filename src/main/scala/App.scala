@@ -51,8 +51,8 @@ object App {
             val Employee = new Employee
             Employee GetEmployee
              case "8" =>
-               val askdetails = new AskDetails
-                     askdetails
+               val TravellingAlgorithm = new TravellingAlgorithm("1")
+                     TravellingAlgorithm
           case _ => println("choose valid option")
           
         }
