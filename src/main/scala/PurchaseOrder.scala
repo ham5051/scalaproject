@@ -22,10 +22,10 @@ class PurchaseOrder {
       }
 
       val statement = Database.connection.createStatement()
-      
+
       val sql = "SELECT purchaseorderid, date, status, employeeid FROM PurchaseOrder"
       // creates the statement, and run the select query
-       
+
       //run sql query
       val resultSet = statement.executeQuery(sql)
       println("Purchase Orders")
@@ -35,7 +35,7 @@ class PurchaseOrder {
         val date = resultSet.getString("date")
         val status = resultSet.getString("status")
         val empid = resultSet.getString("employeeid")
-          
+
         //print out information gathered from the database
         println("ID = " + pid + " Date = " + date + " Order Status = " + status +
           " Employee ID = " + empid)
@@ -62,12 +62,12 @@ class PurchaseOrder {
 
     } catch {
 
-      case e => e.printStackTrace
+      case e: Throwable => e.printStackTrace
 
     }
   }
-  
-    //method gets all purchase orders from the database
+
+  //method gets all purchase orders from the database
   def ChangePurchaseOrderStatus {
 
     val Database = new Database
@@ -115,7 +115,7 @@ class PurchaseOrder {
           case "2" => Processing(Orderid1)
           case "3" => dispatched(Orderid1)
           case "4" => Delivered(Orderid1)
-          case _ => println("choose valid option")
+          case _   => println("choose valid option")
         }
       }
       try {
@@ -130,7 +130,7 @@ class PurchaseOrder {
 
     } catch {
 
-      case e => e.printStackTrace
+      case e: Throwable => e.printStackTrace
 
     }
   }
@@ -145,12 +145,14 @@ class PurchaseOrder {
         Database.connection
 
       }
-      
+
       //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE PurchaseOrder SET status = 'Dispatched' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
+    } catch {
+        case t: Throwable => t.printStackTrace() // TODO: handle error
+      }
   }
 
   //method to update order status
@@ -167,7 +169,9 @@ class PurchaseOrder {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE PurchaseOrder SET status = 'Confirmed' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
+    } catch {
+        case t: Throwable => t.printStackTrace() // TODO: handle error
+      }
   }
 
   //method to update order status
@@ -180,11 +184,13 @@ class PurchaseOrder {
         Database.connection
 
       }
-            //updates the customer order table
+      //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE PurchaseOrder SET status = 'Processing' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
+    } catch {
+        case t: Throwable => t.printStackTrace() // TODO: handle error
+      }
   }
 
   //method to update order status
@@ -201,46 +207,60 @@ class PurchaseOrder {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE PurchaseOrder SET status = 'Delivered' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
+    } catch {
+        case t: Throwable => t.printStackTrace() // TODO: handle error
+      }
   }
-  
+
   /**
    * Method for adding new stock deliveries
    */
-  
-  def AddPurchaseOrder(Orderid: String)
-  {
+
+  def AddPurchaseOrder {
+    //get current date time with Date()
+    val date = (new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date))
+    val status: String = ("Ordered")
     val Database = new Database
-        
-        //if no connection is initiated it will create one
+    val scanner = new Scanner(System.in)
+    val purchaseOrderLine = new PurchaseOrderLine
+    //if no connection is initiated it will create one
     try {
-      if (Database.connection == null) {
+      if (Database.connection == null)
         Database.connection
-      }
-    } 
       println("Add New Purchase Order")
-    //scan the next line to choose option
-   
-      
-      val dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-     //get current date time with Date()
-     val date = new Date;
-     val date1 = (dateFormat.format(date))
-      
-     val status:String = ("Ordered") 
-       println("Employee ID?")
-       val scanner = new Scanner(System.in)
-       val empid = scanner.nextInt()
-       
-      
-       
-       println("Inserting Records Into Table...")
-       val statement = Database.connection.createStatement()
-      val sql = ("INSERT INTO PurchaseOrder (date, status, employeeid) VALUES('" + date1 + "','" + status + "'," + empid + ")" )
+      //scan the next line to choose option
+      println("Employee ID?")
+      val empid = scanner.nextInt()
+      println("Inserting Records Into Table...")
+      val statement = Database.connection.createStatement()
+      val sql = ("INSERT INTO PurchaseOrder (date, status, employeeid) VALUES('" + date + "','" + status + "'," + empid + ")")
       statement.executeUpdate(sql);
-      println("Inserted Values")
   
+    } 
+    catch {
+      case t: Throwable => t.printStackTrace()
+    }
+
+    val Database2 = new Database
+        
       
+       val sql1 = ("SELECT purchaseorderid, date, status, employeeid FROM PurchaseOrder Where date = '" + date + "'")
+
+       val statement1 = Database2.connection.createStatement()
+      // creates the statement, and run the select query
+     val resultSet1 = statement1.executeQuery(sql1)
+
+      //passing gathered column Data into variables
+     while (resultSet1.next()) {
+        val Orderid = resultSet1.getString("purchaseorderid")
+        val empid = resultSet1.getString("employeeid")
+        println("Inserted Values \n" + " OrderID: " + Orderid + " Date and Time: " + date + " Status: " + status + " EmployeeID: " + empid )
+        val PurchaseOrderLine = new PurchaseOrderLine
+    PurchaseOrderLine NewPurchaseOrderLine(Orderid)
   }
+    
+  }
+  
+
 }
 

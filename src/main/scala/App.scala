@@ -44,7 +44,7 @@ object App {
             PurchaseOrder ChangePurchaseOrderStatus
             case "6" => 
             val PurchaseOrder = new PurchaseOrder
-            PurchaseOrder AddPurchaseOrder("1") 
+            PurchaseOrder AddPurchaseOrder
           case _ => println("choose valid option")
         }
       }

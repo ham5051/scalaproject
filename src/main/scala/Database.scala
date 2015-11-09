@@ -18,9 +18,9 @@ class Database {
     // make the connection
     Class.forName(driver)
     connection = DriverManager.getConnection(url, username, password)
-    
+
   } catch {
-    case e => e.printStackTrace
+    case e: Throwable => e.printStackTrace
   }
 
 }
