@@ -8,8 +8,10 @@ import java.util.Scanner
 //main application to run and test methods
 object App {
   def main(args: Array[String]) {
-
-    
+   
+    val Employee = new Employee
+    Employee GetEmployee
+ 
       while (true) {
 
         println("###################################")
@@ -45,10 +47,17 @@ object App {
             case "6" => 
             val PurchaseOrder = new PurchaseOrder
             PurchaseOrder AddPurchaseOrder
+             case "7" => 
+            val Employee = new Employee
+            Employee GetEmployee
+             case "8" =>
+               val askdetails = new AskDetails
+                     askdetails
           case _ => println("choose valid option")
+          
         }
       }
     
-
+  //  }
   }
 }

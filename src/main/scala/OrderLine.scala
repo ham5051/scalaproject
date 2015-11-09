@@ -33,7 +33,7 @@ class OrderLine {
  
             } catch{
               
-      case e => e.printStackTrace
+      case e: Throwable => e.printStackTrace
     
             }
           }

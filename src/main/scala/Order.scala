@@ -15,8 +15,8 @@ class Order {
     try {
       if (Database.connection == null) {
         Database.connection
-
       }
+      
 
       val statement = Database.connection.createStatement()
 
@@ -60,7 +60,7 @@ class Order {
 
     } catch {
 
-      case e => e.printStackTrace
+      case e: Throwable => e.printStackTrace
 
     }
   }
@@ -121,17 +121,18 @@ class Order {
       } catch {
         case e: Throwable =>
           e printStackTrace ()
-          println("Failed to select a correct Order ID.");
+          println("Failed to select a correct Order ID.")
 
       }
       Database.connection close ()
 
     } catch {
 
-      case e => e.printStackTrace
+      case e: Throwable => e.printStackTrace
 
     }
   }
+  
 
   //method to update order status
   def dispatched(Orderid1: String) {
@@ -141,13 +142,18 @@ class Order {
     try {
       if (Database.connection == null) {
         Database.connection
-
       }
+      
       
       //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Dispatched' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
+    }
+    catch {
+
+      case e: Throwable => e.printStackTrace
+
     }
   }
 
@@ -166,6 +172,11 @@ class Order {
       val sql = ("UPDATE CustomerOrder SET status = 'Confirmed' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
     }
+    catch {
+
+      case e: Throwable => e.printStackTrace
+
+    }
   }
 
   //method to update order status
@@ -183,6 +194,11 @@ class Order {
       val sql = ("UPDATE CustomerOrder SET status = 'Processing' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
     }
+    catch {
+
+      case e: Throwable => e.printStackTrace
+
+    }
   }
 
   //method to update order status
@@ -199,6 +215,11 @@ class Order {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Delivered' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
+    }
+    catch {
+
+      case e: Throwable => e.printStackTrace
+
     }
   }
 

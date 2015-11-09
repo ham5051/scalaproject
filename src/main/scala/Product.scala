@@ -4,7 +4,7 @@ import java.sql.Connection
 /**
  * @author jham
  */
-class Product {
+class Product  {
   //method for getting a list of all products from the database
   def GetProducts {
 
@@ -35,11 +35,13 @@ class Product {
         val img = resultSet.getString("img")
         println("ID = " + pid + " Name = " + pname + " Description = " + pdescription +
           " Price = " + price + " Image = " + img)
-
+ 
+          
+          
       }
     } catch {
 
-      case e => e.printStackTrace
+      case e: Throwable => e.printStackTrace
 
     }
 
