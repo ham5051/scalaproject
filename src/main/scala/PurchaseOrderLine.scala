@@ -61,7 +61,7 @@ class PurchaseOrderLine {
     val sql = "INSERT INTO purchaseorderline VALUES (" + Orderid + "," + productid + "," + quantity + ")"
     statement.executeUpdate(sql)
     println("Inserted Values.")
-    println("Order ID: " + Orderid + " Product ID: "  + productid + " Quantity: " + quantity)
+    println("Order ID: " + Orderid + " Product ID: " + productid + " Quantity: " + quantity)
 
     println("Add another Purchase Order Line? y/n")
     val choice = scanner.nextLine()

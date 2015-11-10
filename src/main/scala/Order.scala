@@ -16,7 +16,6 @@ class Order {
       if (Database.connection == null) {
         Database.connection
       }
-      
 
       val statement = Database.connection.createStatement()
 
@@ -24,8 +23,8 @@ class Order {
 
       // creates the statement, and run the select query
       val resultSet = statement.executeQuery(sql)
-      
-       println("Customer Orders")
+
+      println("Customer Orders")
       //passing gathered column Data into variables
       while (resultSet.next()) {
         val Orderid = resultSet.getString("customerorderid")
@@ -113,7 +112,7 @@ class Order {
           case "2" => Processing(Orderid1)
           case "3" => dispatched(Orderid1)
           case "4" => Delivered(Orderid1)
-          case _ => println("choose valid option")
+          case _   => println("choose valid option")
         }
       }
       try {
@@ -132,7 +131,6 @@ class Order {
 
     }
   }
-  
 
   //method to update order status
   def dispatched(Orderid1: String) {
@@ -143,14 +141,12 @@ class Order {
       if (Database.connection == null) {
         Database.connection
       }
-      
-      
+
       //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Dispatched' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
-    catch {
+    } catch {
 
       case e: Throwable => e.printStackTrace
 
@@ -171,8 +167,7 @@ class Order {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Confirmed' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
-    catch {
+    } catch {
 
       case e: Throwable => e.printStackTrace
 
@@ -189,15 +184,14 @@ class Order {
         Database.connection
 
       }
-            //updates the customer order table
+      //updates the customer order table
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Processing' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
       val TravellingAlgorithm = new TravellingAlgorithm(Orderid1)
       TravellingAlgorithm
-      
-    }
-    catch {
+
+    } catch {
 
       case e: Throwable => e.printStackTrace
 
@@ -218,8 +212,7 @@ class Order {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Delivered' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
-    }
-    catch {
+    } catch {
 
       case e: Throwable => e.printStackTrace
 

@@ -98,7 +98,7 @@ class PurchaseOrder {
         val empid1 = resultSet1.getString("employeeid")
 
         //print out information gathered from the database
-        println("ID = " + Orderid1 + " Date = " + date1 + " Order Status = " + status1 + " Employee ID = " + empid1)
+        println("Purchas OrderID: " + Orderid1 + " Date: " + date1 + " Order Status: " + status1 + " Employee ID: " + empid1)
         println("\nWould You like to change the Status?")
         println("#1 Change to Confirmed")
         println("#2 Change to Processing")
@@ -151,8 +151,8 @@ class PurchaseOrder {
       val sql = ("UPDATE PurchaseOrder SET status = 'Dispatched' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
     } catch {
-        case t: Throwable => t.printStackTrace() // TODO: handle error
-      }
+      case t: Throwable => t.printStackTrace() // TODO: handle error
+    }
   }
 
   //method to update order status
@@ -170,8 +170,8 @@ class PurchaseOrder {
       val sql = ("UPDATE PurchaseOrder SET status = 'Confirmed' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
     } catch {
-        case t: Throwable => t.printStackTrace() // TODO: handle error
-      }
+      case t: Throwable => t.printStackTrace() // TODO: handle error
+    }
   }
 
   //method to update order status
@@ -189,8 +189,8 @@ class PurchaseOrder {
       val sql = ("UPDATE PurchaseOrder SET status = 'Processing' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
     } catch {
-        case t: Throwable => t.printStackTrace() // TODO: handle error
-      }
+      case t: Throwable => t.printStackTrace() // TODO: handle error
+    }
   }
 
   //method to update order status
@@ -207,14 +207,14 @@ class PurchaseOrder {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE PurchaseOrder SET status = 'Delivered' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
-      
+
       val purchaseorder = new PurchaseOrder
-      purchaseorder purchaseorderstock(Orderid1)
+      purchaseorder purchaseorderstock (Orderid1)
     } catch {
-        case t: Throwable => t.printStackTrace() // TODO: handle error
-      }
+      case t: Throwable => t.printStackTrace() // TODO: handle error
+    }
   }
-  
+
   /**
    * jham
    * method for getting stock levels for each purchase order
@@ -234,7 +234,7 @@ class PurchaseOrder {
 
       val statement = Database.connection.createStatement()
 
-      val sql1 = (" SELECT purchaseorderline.productid, quantity, purchaseorderid FROM Product, Inventory, purchaseorderline WHERE inventory.iproductid = product.productid AND product.productid = purchaseorderline.productid and purchaseorderid = '" + Orderid1 +"'")
+      val sql1 = (" SELECT purchaseorderline.productid, quantity, purchaseorderid FROM Product, Inventory, purchaseorderline WHERE inventory.iproductid = product.productid AND product.productid = purchaseorderline.productid and purchaseorderid = '" + Orderid1 + "'")
 
       // creates the statement, and run the select query
       val resultSet1 = statement.executeQuery(sql1)
@@ -246,9 +246,9 @@ class PurchaseOrder {
         val orderid = resultSet1.getString("purchaseorderid")
 
         val purchaseorder = new PurchaseOrder
-      purchaseorder updateTable(quantity, productid)
-        
-        }
+        purchaseorder updateTable (quantity, productid)
+
+      }
       try {
 
       } catch {
@@ -265,12 +265,12 @@ class PurchaseOrder {
 
     }
   }
-  
+
   /**
    * jham
    * method for updating stock levels for each purchase order
    */
-  def updateTable(quantity: Int, productid: Int){
+  def updateTable(quantity: Int, productid: Int) {
     val Database = new Database
 
     //if no connection is initiated it will create one
@@ -285,11 +285,10 @@ class PurchaseOrder {
       statement.executeUpdate(sql);
       println("Added " + quantity + " of Product " + productid + "to stock level")
     } catch {
-        case t: Throwable => t.printStackTrace() // TODO: handle error
-      }
-    
-  }
+      case t: Throwable => t.printStackTrace() // TODO: handle error
+    }
 
+  }
 
   /**
    * Method for adding new stock deliveries
@@ -314,32 +313,29 @@ class PurchaseOrder {
       val statement = Database.connection.createStatement()
       val sql = ("INSERT INTO PurchaseOrder (date, status, employeeid) VALUES('" + date + "','" + status + "'," + empid + ")")
       statement.executeUpdate(sql);
-  
-    } 
-    catch {
+
+    } catch {
       case t: Throwable => t.printStackTrace()
     }
 
     val Database2 = new Database
-        
-      
-       val sql1 = ("SELECT purchaseorderid, date, status, employeeid FROM PurchaseOrder Where date = '" + date + "'")
 
-       val statement1 = Database2.connection.createStatement()
-      // creates the statement, and run the select query
-     val resultSet1 = statement1.executeQuery(sql1)
+    val sql1 = ("SELECT purchaseorderid, date, status, employeeid FROM PurchaseOrder Where date = '" + date + "'")
 
-      //passing gathered column Data into variables
-     while (resultSet1.next()) {
-        val Orderid = resultSet1.getString("purchaseorderid")
-        val empid = resultSet1.getString("employeeid")
-        println("Inserted Values \n" + " OrderID: " + Orderid + " Date and Time: " + date + " Status: " + status + " EmployeeID: " + empid )
-        val PurchaseOrderLine = new PurchaseOrderLine
-    PurchaseOrderLine NewPurchaseOrderLine(Orderid)
+    val statement1 = Database2.connection.createStatement()
+    // creates the statement, and run the select query
+    val resultSet1 = statement1.executeQuery(sql1)
+
+    //passing gathered column Data into variables
+    while (resultSet1.next()) {
+      val Orderid = resultSet1.getString("purchaseorderid")
+      val empid = resultSet1.getString("employeeid")
+      println("Inserted Values \n" + " OrderID: " + Orderid + " Date and Time: " + date + " Status: " + status + " EmployeeID: " + empid)
+      val PurchaseOrderLine = new PurchaseOrderLine
+      PurchaseOrderLine NewPurchaseOrderLine (Orderid)
+    }
+
   }
-    
-  }
-  
 
 }
 

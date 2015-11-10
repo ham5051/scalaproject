@@ -2,67 +2,111 @@
 import java.util.Scanner
 //import default.Database
 
-
-class AskDetails {
-  
-    val scanner = new Scanner(System.in)
- 
-    println("############# Log In ##############")
-    println("Please Enter username:")
-   val username = scanner.nextLine()
-    println("Please Enter Password:")
-   val password = scanner.nextLine()
-   val GetEmployee = new Employee
-         GetEmployee.GetEmployee(username, password)
-}
-
-    
 /**
  * @author jham
  */
-class Employee {
+class Employee(app : WarehouseOrderTrackingApplication) {
+  var _employeeUsername : String = _
+  var _employeePassword : String = _
+  var loggedIn : Boolean = _
+
   
-  var loggedIn : Boolean = false
+  /**
+   * Default Class constructor
+   */
+  def Employee() {
+  }
 
-  def GetEmployee(username: String, password: String) {
 
+  def establishEmployees() {
+    
     val Database = new Database
-
-    //if no connection is initiated it will create one
-    try {
+    // Create database instance & connection
+   try {
       if (Database.connection == null) {
         Database.connection
-
+      }
         val statement = Database.connection.createStatement()
 
-        val sql = "SELECT username, password FROM Employee"
-
-        // creates the statement, and run the select query
-        val resultSet = statement.executeQuery(sql)
-
-        //passing gathered column Data into variables
-        while (resultSet next ()) {
-          val username1 = resultSet.getString("username")
-          val password1 = resultSet.getString("password")
-          println(username1 + password1)
-
-          if (username1.equalsIgnoreCase(username) && password1.equalsIgnoreCase(password) && !loggedIn) {
-            // set flag to true
-            loggedIn = true
-            println("Logged in")
-          } else if (!username1.equalsIgnoreCase(username) && password1.equalsIgnoreCase(password) && loggedIn){
-            val AskDetails = new AskDetails
-            AskDetails
-            
-          }
+      val sql = "SELECT username, password FROM Employee"
+       val resultSet = statement.executeQuery(sql)
+      
+      // Loop through the database elements
+      while (resultSet next) {
+        
+        // User input login details matches database
+        if (login(getUsername, getPassword, resultSet.getString(1), resultSet.getString(2)) == 0) {
+          
+          // Set logged in flag to true
+          loggedIn = true
+          
+          // Print welcome message to user
+          println("\nWelcome " + _employeeUsername 
+            + ", you are now logged in.")
+        }
+        // User input doesn't match database
+        else if (login(getUsername, getPassword, resultSet.getString(1), resultSet.getString(2)) == 1
+            && !loggedIn) {
+          
+          // Set logged in flag to false
+          loggedIn = false
         }
       }
+      // If login fails
+      if (!loggedIn) {
+        
+        // Print failed login error message
+        println("Failed to Login\n")
+        
+        app promptUserForLoginDetails
+
+      }
+      // close the connection
+      resultSet close
     } catch {
+        case e : Throwable => e.printStackTrace
+  }
+  }
+   
+  // Employee login function
+  def login(username: String, password: String, dbUser: String,
+            dbPass: String): Int = {
 
-      case e: Throwable => e.printStackTrace
-
+    // Run check
+    if (username.equalsIgnoreCase(dbUser) && password.equalsIgnoreCase(dbPass)) {
+      0
+    } else {
+      1
     }
+  }
+  // Employee login function
+  def UserLogin(username: String, password: String, dbUser: String,
+                dbPass: String): Int = {
 
+    // Run check
+    if (username.equalsIgnoreCase(dbUser) && password.equalsIgnoreCase(dbPass)) {
+      0
+    } else {
+      1
+    }
+  }
+  def getUsername() : String = {
+    _employeeUsername
+  }
+  
+  // employee password accessor
+  def getPassword() : String = {
+    _employeePassword
+  }
+  
+  // Employee username mutator
+  def setUsername(employeeUsername : String) {
+    _employeeUsername = employeeUsername
+  }
+  
+  // Employee password mutator
+  def setPassword(employeePassword : String) {
+    _employeePassword = employeePassword
   }
 
 }
