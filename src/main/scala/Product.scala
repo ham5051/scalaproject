@@ -20,7 +20,7 @@ class Product  {
       
       val statement = Database.connection.createStatement()
       
-      val sql = "SELECT productid, productname, description, price, img FROM Product"
+      val sql = "SELECT productid, productname, description, price, stocklevel FROM Product, Inventory WHERE inventory.iproductid = product.productid"
       // create the statement, and run the select query
 
       //run sql query
@@ -32,9 +32,9 @@ class Product  {
         val pname = resultSet.getString("productname")
         val pdescription = resultSet.getString("description")
         val price = resultSet.getString("price")
-        val img = resultSet.getString("img")
-        println("ID = " + pid + " Name = " + pname + " Description = " + pdescription +
-          " Price = " + price + " Image = " + img)
+        val img = resultSet.getString("stocklevel")
+        println("ID: " + pid + "  Name: " + pname + "  Description: " + pdescription +
+          "  Price: " + price + " Stock Level " + img)
  
           
           

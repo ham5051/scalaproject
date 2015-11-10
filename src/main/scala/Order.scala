@@ -193,6 +193,9 @@ class Order {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE CustomerOrder SET status = 'Processing' WHERE customerorderid = " + Orderid1)
       statement.executeUpdate(sql);
+      val TravellingAlgorithm = new TravellingAlgorithm(Orderid1)
+      TravellingAlgorithm
+      
     }
     catch {
 

@@ -207,10 +207,89 @@ class PurchaseOrder {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE PurchaseOrder SET status = 'Delivered' WHERE purchaseorderid = " + Orderid1)
       statement.executeUpdate(sql);
+      
+      val purchaseorder = new PurchaseOrder
+      purchaseorder purchaseorderstock(Orderid1)
     } catch {
         case t: Throwable => t.printStackTrace() // TODO: handle error
       }
   }
+  
+  /**
+   * jham
+   * method for getting stock levels for each purchase order
+   */
+  def purchaseorderstock(Orderid1: String) {
+
+    val Database = new Database
+
+    //if no connection is initiated it will create one
+    try {
+      if (Database.connection == null) {
+        Database.connection
+
+      }
+
+      val scan = new Scanner(System.in)
+
+      val statement = Database.connection.createStatement()
+
+      val sql1 = (" SELECT purchaseorderline.productid, quantity, purchaseorderid FROM Product, Inventory, purchaseorderline WHERE inventory.iproductid = product.productid AND product.productid = purchaseorderline.productid and purchaseorderid = '" + Orderid1 +"'")
+
+      // creates the statement, and run the select query
+      val resultSet1 = statement.executeQuery(sql1)
+
+      //passing gathered column Data into variables
+      while (resultSet1.next()) {
+        val productid = resultSet1.getInt("purchaseorderline.productid")
+        val quantity = resultSet1.getInt("quantity")
+        val orderid = resultSet1.getString("purchaseorderid")
+
+        val purchaseorder = new PurchaseOrder
+      purchaseorder updateTable(quantity, productid)
+        
+        }
+      try {
+
+      } catch {
+        case e: Throwable =>
+          e printStackTrace ()
+          println("Failed to select a correct Order ID.");
+
+      }
+      Database.connection close ()
+
+    } catch {
+
+      case e: Throwable => e.printStackTrace
+
+    }
+  }
+  
+  /**
+   * jham
+   * method for updating stock levels for each purchase order
+   */
+  def updateTable(quantity: Int, productid: Int){
+    val Database = new Database
+
+    //if no connection is initiated it will create one
+    try {
+      if (Database.connection == null) {
+        Database.connection
+
+      }
+
+      val statement = Database.connection.createStatement()
+      val sql = ("UPDATE Inventory SET stocklevel = stocklevel + " + quantity + " WHERE iproductid = " + productid)
+      statement.executeUpdate(sql);
+      println("Added " + quantity + " of Product " + productid + "to stock level")
+    } catch {
+        case t: Throwable => t.printStackTrace() // TODO: handle error
+      }
+    
+  }
+
 
   /**
    * Method for adding new stock deliveries

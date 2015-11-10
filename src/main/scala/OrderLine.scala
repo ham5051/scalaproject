@@ -14,18 +14,18 @@ class OrderLine {
        }
           
            val statement = Database.connection.createStatement()
-           val sql =  ("SELECT customerorderid, productid, quantity FROM CustomerOrderLine WHERE customerorderid = " + Orderid)
+           val sql =  ("SELECT customerorderid, productname, quantity FROM CustomerOrderLine, Product WHERE customerorderline.productid = product.productid AND customerorderid = " + Orderid)
       // creates the statement, and run the select query
     
            val resultSet = statement.executeQuery(sql)
 
       while ( resultSet.next() ) {
         val pid = resultSet.getString("customerorderid")
-        val product = resultSet.getString("productid")
+        val product = resultSet.getString("productname")
         val quantity = resultSet.getString("quantity")
 
 
-        println("Order ID = " + pid + " Product ID = " + product + " Quantity = " + quantity)
+        println("Order ID: " + pid + "  Product: " + product + "  Quantity: " + quantity)
             
                }
            

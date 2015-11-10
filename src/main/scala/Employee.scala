@@ -1,27 +1,31 @@
+
 import java.util.Scanner
+//import default.Database
 
-class AskDetails(var username: String, var password: String) {
-  def this() = {
-    this("", "")
 
+class AskDetails {
+  
     val scanner = new Scanner(System.in)
-    
+ 
     println("############# Log In ##############")
     println("Please Enter username:")
-   var username = scanner.nextLine()
+   val username = scanner.nextLine()
     println("Please Enter Password:")
-   var password = scanner.nextLine()
- }
+   val password = scanner.nextLine()
+   val GetEmployee = new Employee
+         GetEmployee.GetEmployee(username, password)
 }
+
     
 /**
  * @author jham
  */
 class Employee {
+  
+  var loggedIn : Boolean = false
 
-  def GetEmployee {
-val askdetails = new AskDetails
-          askdetails
+  def GetEmployee(username: String, password: String) {
+
     val Database = new Database
 
     //if no connection is initiated it will create one
@@ -42,10 +46,14 @@ val askdetails = new AskDetails
           val password1 = resultSet.getString("password")
           println(username1 + password1)
 
-          if (username1.equalsIgnoreCase(askdetails.username) && password1.equalsIgnoreCase(askdetails.password)) {
+          if (username1.equalsIgnoreCase(username) && password1.equalsIgnoreCase(password) && !loggedIn) {
+            // set flag to true
+            loggedIn = true
             println("Logged in")
-          } else {
-            GetEmployee
+          } else if (!username1.equalsIgnoreCase(username) && password1.equalsIgnoreCase(password) && loggedIn){
+            val AskDetails = new AskDetails
+            AskDetails
+            
           }
         }
       }
