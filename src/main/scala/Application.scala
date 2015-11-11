@@ -119,6 +119,9 @@ class WarehouseOrderTrackingApplication {
         case "9" =>
           println("Goodbye")
           System.exit(0)
+          case "10" =>
+          val Sender = new Sender
+          Sender
         case _ => println("choose valid option")
 
       }
