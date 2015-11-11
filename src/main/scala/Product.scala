@@ -1,5 +1,10 @@
 import java.sql.DriverManager
+import java.util.Scanner
 import java.sql.Connection
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * @author jham
@@ -37,11 +42,49 @@ class Product {
           "  Price: " + price + " Stock Level " + img)
 
       }
+           val scanner = new Scanner(System.in)
+        println("Remove Damaged Stock? y/n")
+    val choice = scanner.nextLine()
+
+    if (choice.equalsIgnoreCase("y")) {
+       println("Which Product Has been Damaged?")
+      DamagedStock(scanner.nextLine().toString())
+    } else
+      Application   
+
     } catch {
 
       case e: Throwable => e.printStackTrace
-
     }
-
   }
+  
+  def output(productid: String){
+    //get current date time with Date()
+    val date = (new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date))
+    println("Product " + productid + " was damaged on " + date)
+  }
+  
+  /**
+   * jham
+   * method for removing damaged Stock
+   */
+  def DamagedStock(productid: String) {
+    val Database = new Database
+
+    //if no connection is initiated it will create one
+    try {
+      if (Database.connection == null) {
+        Database.connection
+
+      }
+      //updates the customer order table
+      val statement = Database.connection.createStatement()
+      val sql = ("UPDATE Inventory SET stocklevel = stocklevel -1 WHERE iproductid = " + productid)
+      statement.executeUpdate(sql);
+            output(productid)
+    } catch {
+      case t: Throwable => t.printStackTrace() // TODO: handle error
+    }
+  }
+  
 }
