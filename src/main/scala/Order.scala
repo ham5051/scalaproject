@@ -37,11 +37,10 @@ class Order {
           " Employee ID = " + empid)
 
       }
-
       val scanner = new Scanner(System.in)
 
       println("\nWhich order do you want to view?");
-
+      
       try {
 
         //method for selecting which order you want to look at
