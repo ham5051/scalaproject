@@ -48,7 +48,10 @@ class Product {
 
     if (choice.equalsIgnoreCase("y")) {
        println("Which Product Has been Damaged?")
-      DamagedStock(scanner.nextLine().toString())
+      val choice = scanner.nextLine().toString()
+      DamagedStock(choice)
+      val producer = new Producer
+       producer.RunProducer(choice)
     } else
       Application   
 
@@ -58,10 +61,10 @@ class Product {
     }
   }
   
-  def output(productid: String){
+  def output(productid: String):String ={
     //get current date time with Date()
     val date = (new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date))
-    println("Product " + productid + " was damaged on " + date)
+    "Product " + productid + " was damaged on " + date
   }
   
   /**
