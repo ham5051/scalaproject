@@ -3,9 +3,9 @@ package Scala
 /**
  * @author jham
  */
-class TravellingAlgorithm(Orderid1: String) {
+class TravellingAlgorithm {
 
-  def quickestRoute {
+  def quickestRoute(Orderid1: String) {
 
     val Database = new Database
 
@@ -22,15 +22,14 @@ class TravellingAlgorithm(Orderid1: String) {
       val resultSet = statement.executeQuery(sql)
       println("Best Route to take for Order " + Orderid1)
       //passing gathered column Data into variables
-      while (resultSet.next()) {
+      if (resultSet.next()) {
         val pname = resultSet.getString("productname")
         val quantity = resultSet.getString("quantity")
         val location = resultSet.getString("location")
-
-        println("Location " + location.sortBy { x => 100 } + " Product: " + pname + "  Quantity: " + quantity)
+        val route: String = "Location " + location.sortBy { x => 100 } + " Product: " + pname + "  Quantity: " + quantity
         //print out information gathered from the database
-
-      }
+      println(printResult(route))
+      } 
 
     } catch {
 
@@ -38,5 +37,7 @@ class TravellingAlgorithm(Orderid1: String) {
 
     }
   }
+  def printResult(route: String) : String = {
+  route }
 }
 

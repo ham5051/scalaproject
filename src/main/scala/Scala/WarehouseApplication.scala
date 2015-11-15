@@ -33,7 +33,7 @@ class WarehouseApplication {
     promptUserForLoginDetails
 
     // Create a run options flag
-    var runOptions: Boolean = true
+    val runOptions: Boolean = true
 
     while (runOptions) {
       // Prompt user for order display
@@ -83,28 +83,33 @@ class WarehouseApplication {
       println("#5 Change Purchae Order Status")
       println("#6 Add New Purchase Order")
       println("#7 Warehouse Layout Map")
-      println("#8 Log Out")
-      println("#9 System Exit")
-    
+      println("#8 Remove Damaged Stock")
+      println("#9 Log Out")
+      println("#10 System Exit")
+
       /**
-   * scanner with match case choices to trigger the methods
-   */
+       * scanner with match case choices to trigger the methods
+       */
 
       val scanner = new Scanner(System.in)
       val line: String = scanner.nextLine()
       line match {
         case "1" =>
           val Products = new Product
-          Products GetProducts
+          Products displayProducts
         case "2" =>
-          val Order = new Order
-          Order GetOrders
+          val Order = new Order("")
+          Order displayOrders
+          val SelectOrder = new OrderLine   
+        SelectOrder.selectOrder
         case "3" =>
-          val Order = new Order
+          val Order = new Order("")
           Order ChangeOrderStatus
         case "4" =>
           val PurchaseOrder = new PurchaseOrder
-          PurchaseOrder GetPurchaseOrders
+          PurchaseOrder displayPurchaseOrders 
+           val PurchaseOrder1 = new PurchaseOrder
+          PurchaseOrder1 selectPurchaseOrder
         case "5" =>
           val PurchaseOrder = new PurchaseOrder
           PurchaseOrder ChangePurchaseOrderStatus
@@ -116,9 +121,12 @@ class WarehouseApplication {
           println("Display Warehouse Layout Image")
           WarehouseImage showImage
         case "8" =>
+          val Product = new Product
+          Product RemoveStock
+        case "9" =>
           println("Goodbye")
           promptUserForLoginDetails
-        case "9" =>
+        case "10" =>
           println("Goodbye")
           System.exit(0)
         case _ => println("choose valid option")

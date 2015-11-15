@@ -3,13 +3,14 @@ package Scala
 import java.util.Scanner
 import java.util.Date
 import java.text.SimpleDateFormat
+import scala.collection.mutable.ListBuffer
 
 /**
  * @author jham
  */
 class Product {
   //method for getting a list of all products from the database
-  def GetProducts {
+  def GetProducts: ListBuffer[String] = {
 
     //initiates new database connection
     val Database = new Database
@@ -28,43 +29,75 @@ class Product {
 
       //run sql query
       val resultSet = statement.executeQuery(sql)
+      var productArray = new ListBuffer[String]
 
-      //passing gathered column Data into variables
-      while (resultSet.next()) {
-        val pid = resultSet.getString("productid")
-        val pname = resultSet.getString("productname")
-        val pdescription = resultSet.getString("description")
-        val price = resultSet.getString("price")
-        val img = resultSet.getString("stocklevel")
-        println("ID: " + pid + "  Name: " + pname + "  Description: " + pdescription +
-          "  Price: " + price + " Stock Level " + img)
-
+      def recursion {
+        if (resultSet.next()) {
+          //passing gathered column Data into variables
+          val pid = resultSet.getString("productid")
+          val pname = resultSet.getString("productname")
+          val pdescription = resultSet.getString("description")
+          val price = resultSet.getString("price")
+          val img = resultSet.getString("stocklevel")
+          val output = "ID: " + pid + "  Name: " + pname + "  Description: " + pdescription +
+            "  Price: " + price + " Stock Level " + img
+          productArray += (output)
+          recursion
+        }
       }
-           val scanner = new Scanner(System.in)
-        println("Remove Damaged Stock? y/n")
-    val choice = scanner.nextLine()
 
-    if (choice.equalsIgnoreCase("y")) {
-       println("Which Product Has been Damaged?")
-      val choice = scanner.nextLine().toString()
-      DamagedStock(choice)
-      val producer = new Producer
-       producer.RunProducer(choice)
-    } else
-      Application   
+      recursion
+      productArray
 
     } catch {
 
-      case e: Throwable => e.printStackTrace
+      case e: Throwable =>
+        {
+          e.printStackTrace
+          null
+        }
+    }
+
+  }
+
+  def Read(i: Int, productArray: ListBuffer[String]): Unit = {
+
+    // If not at the end of the list
+    if (i < productArray.length) {
+      println(productArray(i))
+
+      // i++
+      Read(i + (1), productArray)
     }
   }
-  
-  def output(productid: String):String ={
+
+  def displayProducts: Unit = {
+    val productArray = GetProducts
+    // i = 0
+    Read(0, productArray)
+  }
+
+  def RemoveStock {
+    val scanner = new Scanner(System.in)
+    println("Remove Damaged Stock? y/n")
+    val choice = scanner.nextLine()
+
+    if (choice.equalsIgnoreCase("y")) {
+      println("Which Product Has been Damaged?")
+      val choice = scanner.nextLine().toString()
+      DamagedStock(choice)
+      val producer = new Producer
+      producer.RunProducer(choice)
+    } else
+      Application
+  }
+
+  def output(productid: String): String = {
     //get current date time with Date()
     val date = (new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date))
     "Product " + productid + " was damaged on " + date
   }
-  
+
   /**
    * jham
    * method for removing damaged Stock
@@ -82,10 +115,10 @@ class Product {
       val statement = Database.connection.createStatement()
       val sql = ("UPDATE Inventory SET stocklevel = stocklevel -1 WHERE iproductid = " + productid)
       statement.executeUpdate(sql);
-            output(productid)
+      output(productid)
     } catch {
       case t: Throwable => t.printStackTrace() // TODO: handle error
     }
   }
-  
+
 }

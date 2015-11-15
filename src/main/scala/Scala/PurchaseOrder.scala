@@ -3,14 +3,14 @@ package Scala
 import java.util.Scanner
 import java.util.Date
 import java.text.SimpleDateFormat
-
+import scala.collection.mutable.ListBuffer
 /**
  * @author jham
  */
 class PurchaseOrder {
 
   //method gets all purchase orders from the database
-  def GetPurchaseOrders {
+  def GetPurchaseOrders: ListBuffer[String] = {
 
     val Database = new Database
 
@@ -27,46 +27,76 @@ class PurchaseOrder {
 
       //run sql query
       val resultSet = statement.executeQuery(sql)
+      var POArray = new ListBuffer[String]
+      
       println("Purchase Orders")
       //passing gathered column Data into variables
-      while (resultSet.next()) {
-        val pid = resultSet.getString("purchaseorderid")
-        val date = resultSet.getString("date")
-        val status = resultSet.getString("status")
-        val empid = resultSet.getString("employeeid")
+      def recursion {
+        if (resultSet.next()) {
+          val pid = resultSet.getString("purchaseorderid")
+          val date = resultSet.getString("date")
+          val status = resultSet.getString("status")
+          val empid = resultSet.getString("employeeid")
 
-        //print out information gathered from the database
-        println("ID = " + pid + " Date = " + date + " Order Status = " + status +
-          " Employee ID = " + empid)
-
+          //print out information gathered from the database
+          val output = "ID = " + pid + " Date = " + date + " Order Status = " + status + " Employee ID = " + empid
+          
+          POArray += (output)
+          recursion
+        }
       }
-      val scanner = new Scanner(System.in)
-
-      println("\nWhich order do you want to view?");
-
-      try {
-
-        //method for selecting which order you want to look at
-
-        val scanner = new Scanner(System.in)
-        val PurchaseOrderLine = new PurchaseOrderLine
-        PurchaseOrderLine.GetPurchaseOrderLine(scanner.nextLine().toString())
-      } catch {
-        case e: Throwable =>
-          e printStackTrace ()
-          println("Failed to select a correct Order ID.");
-
-      }
-      Database.connection close ()
+      recursion
+      POArray
 
     } catch {
 
-      case e: Throwable => e.printStackTrace
-
+      case e: Throwable =>
+        {
+          e.printStackTrace
+          null
+        }
     }
   }
 
- /**
+  def Read(i: Int, POArray: ListBuffer[String]): Unit = {
+
+    // If not at the end of the list
+    if (i < POArray.length) {
+      println(POArray(i))
+
+      // i++
+      Read(i + (1), POArray)
+    }
+  }
+
+  def displayPurchaseOrders: Unit = {
+    val Array = GetPurchaseOrders
+    // i = 0
+    Read(0, Array)
+  }
+  
+//select order to view
+  def selectPurchaseOrder {
+    val scanner = new Scanner(System.in)
+    println("\nWhich order do you want to view?");
+
+    try {
+      //method for selecting which order you want to look at
+
+      val PurchaseOrderLine = new PurchaseOrderLine
+      PurchaseOrderLine.GetPurchaseOrderLine(scanner.nextLine().toString())
+    } catch {
+
+      case e: Throwable =>
+        {
+          e.printStackTrace
+          println("Failed to select a correct Order ID.")
+
+        }
+    }
+  }
+
+  /**
    * method gets all purchase orders from the database with nested functions for implementing each action
    */
   def ChangePurchaseOrderStatus {
@@ -118,22 +148,22 @@ class PurchaseOrder {
           case "4" => Delivered(Orderid1)
           case _   => println("choose valid option")
         }
-        
+
         //method to update order status
-          def Confirmed(Orderid1: String) {
-            //updates the customer order table
-            val statement = Database.connection.createStatement()
-            val sql = ("UPDATE PurchaseOrder SET status = 'Confirmed' WHERE purchaseorderid = " + Orderid1)
-            statement.executeUpdate(sql);
-          }
-          
-         //method to update order status
-          def Processing(Orderid1: String) {
-              //updates the customer order table
-              val statement = Database.connection.createStatement()
-              val sql = ("UPDATE PurchaseOrder SET status = 'Processing' WHERE purchaseorderid = " + Orderid1)
-              statement.executeUpdate(sql);
-          }
+        def Confirmed(Orderid1: String) {
+          //updates the customer order table
+          val statement = Database.connection.createStatement()
+          val sql = ("UPDATE PurchaseOrder SET status = 'Confirmed' WHERE purchaseorderid = " + Orderid1)
+          statement.executeUpdate(sql);
+        }
+
+        //method to update order status
+        def Processing(Orderid1: String) {
+          //updates the customer order table
+          val statement = Database.connection.createStatement()
+          val sql = ("UPDATE PurchaseOrder SET status = 'Processing' WHERE purchaseorderid = " + Orderid1)
+          statement.executeUpdate(sql);
+        }
 
         //method to update order status
         def dispatched(Orderid1: String) {
@@ -152,7 +182,7 @@ class PurchaseOrder {
           val purchaseorder = new PurchaseOrder
           purchaseorder purchaseorderstock (Orderid1)
         }
-          
+
       }
       try {
 

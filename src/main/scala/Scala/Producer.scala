@@ -25,15 +25,24 @@ class Producer {
 
   def RunProducer(productid: String) {
 
-    //sets up connection factory in the server
+    /**
+     * jham
+     * sets up connection factory in the server
+     */
     val connectionFactory: ConnectionFactory = new ActiveMQConnectionFactory(activeMqUrl)
-    //starts the connection
+   
+    /**
+     * starts the connection
+     */
     val connection: Connection = connectionFactory.createConnection
     connection.start
+    
     //starts new session within the server
     val session: Session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
+    
     //sets the destination to the topic name
     val destination: Destination = session.createTopic(topicName)
+    
     //produces the message packet for the producer to be sent to
     val messageProducer: MessageProducer = session.createProducer(destination)
     
